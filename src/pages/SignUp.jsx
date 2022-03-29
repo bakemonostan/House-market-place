@@ -1,5 +1,19 @@
+//* hooks
 import { useState } from 'react';
+
+//* firebase auth
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+
+import { db } from '../Firebase/firebaseConfig';
+
+//* react-router-dom
 import { Link, useNavigate } from 'react-router-dom';
+
+//* svg assects
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 
@@ -13,6 +27,7 @@ function SignUp() {
 
   const { name, email, password } = formData;
 
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   // return form data object
@@ -23,6 +38,26 @@ function SignUp() {
     }));
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth(); // always remmeber to call getAuht()
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredentials.user;
+
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className='pageContainer'>
@@ -30,7 +65,7 @@ function SignUp() {
           <p className='pageHeader'>Welcome Back</p>
         </header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <input
             type='text'
             className='nameInput'
