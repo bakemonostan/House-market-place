@@ -7,8 +7,9 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 
-import { db } from '../Firebase/firebaseConfig';
+import { db } from '../Firebase/firebaseConfig.js';
 
 //* react-router-dom
 import { Link, useNavigate } from 'react-router-dom';
@@ -27,7 +28,6 @@ function SignUp() {
 
   const { name, email, password } = formData;
 
-  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   // return form data object
@@ -52,6 +52,12 @@ function SignUp() {
       updateProfile(auth.currentUser, {
         displayName: name,
       });
+
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, 'users', user.uid), formDataCopy);
 
       navigate('/');
     } catch (error) {
