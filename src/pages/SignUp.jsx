@@ -42,7 +42,7 @@ function SignUp() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const auth = getAuth(); // always remmeber to call getAuht()
+      const auth = getAuth(); // always remmeber to call getAuth()
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -63,6 +63,7 @@ function SignUp() {
       navigate('/');
     } catch (error) {
       toast.error('Something went wrong');
+      console.log(error);
     }
   };
   return (
