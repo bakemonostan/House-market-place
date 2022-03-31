@@ -22,6 +22,10 @@ function Profile() {
     navigate('/');
   };
 
+  const onSubmit = () => {
+    console.log(123);
+  };
+
   // return user ? <h1>{user.displayName}</h1> : 'Not logged In';
   return (
     <div className='profile'>
@@ -31,6 +35,21 @@ function Profile() {
           Logout
         </button>
       </header>
+      <main>
+        <div className='profileDetailsHeader'>
+          <p className='profileDetailsText'>
+            <p
+              className='changePersonalDetails'
+              onClick={() => {
+                changeDetails && onSubmit();
+                setChangeDetails((prevState) => !prevState);
+              }}
+            >
+              {changeDetails ? 'done' : 'change'}
+            </p>
+          </p>
+        </div>
+      </main>
     </div>
   );
 }
